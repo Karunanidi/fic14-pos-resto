@@ -30,7 +30,8 @@ class DiscountRemoteDatasource {
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer ${authData.token}',
       'Accept': 'application/json',
-    }, body: {
+    }, 
+    body: {
       'name': name,
       'description': description,
       'value': value.toString(),

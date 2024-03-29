@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_posresto_app/data/models/response/product_response_model.dart';
 import 'package:flutter_posresto_app/presentation/home/models/order_model.dart';
 import 'package:intl/intl.dart';
@@ -158,7 +159,7 @@ class ProductLocalDatasource {
     for (var product in products) {
       await db.insert(tableProduct, product.toLocalMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
-      print('inserted success ${product.name}');
+      debugPrint('inserted success ${product.name}');
     }
   }
 

@@ -125,166 +125,162 @@ class _ReportPageState extends State<ReportPage> {
           ),
 
           // RIGHT CONTENT
-          const Expanded(
+          Expanded(
             flex: 2,
-            child: Center(
-              child: Text('report page')
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child:
+                    BlocBuilder<TransactionReportBloc, TransactionReportState>(
+                  builder: (context, state) {
+                    final totalRevenue = state.maybeMap(
+                      orElse: () => 0,
+                      loaded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.total,
+                        );
+                      },
+                    );
+
+                    final subTotal = state.maybeMap(
+                      orElse: () => 0,
+                      loaded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.subTotal,
+                        );
+                      },
+                    );
+
+                    final discount = state.maybeMap(
+                      orElse: () => 0,
+                      loaded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.discount,
+                        );
+                      },
+                    );
+
+                    final tax = state.maybeMap(
+                      orElse: () => 0,
+                      loaded: (value) {
+                        return value.transactionReport.fold(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.tax,
+                        );
+                      },
+                    );
+                    return state.maybeWhen(orElse: () {
+                      return const Center(
+                        child: Text('No Data'),
+                      );
+                    }, loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }, loaded: (transactionReport) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16.0),
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              searchDateFormatted,
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                          const SpaceHeight(16.0),
+
+                          // REVENUE INFO
+                          ...[
+                            Text('REVENUE : $totalRevenue'),
+                            const SpaceHeight(8.0),
+                            const DashedLine(),
+                            const DashedLine(),
+                            const SpaceHeight(8.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Subtotal'),
+                                Text('$subTotal'),
+                              ],
+                            ),
+                            const SpaceHeight(4.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Discount'),
+                                Text('$discount'),
+                              ],
+                            ),
+                            const SpaceHeight(4.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Tax'),
+                                Text('$tax'),
+                              ],
+                            ),
+                            const SpaceHeight(8.0),
+                            const DashedLine(),
+                            const DashedLine(),
+                            const SpaceHeight(8.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('TOTAL'),
+                                Text('$totalRevenue'),
+                              ],
+                            ),
+                          ],
+                          const SpaceHeight(32.0),
+
+                          // PAYMENT INFO
+                          // ...[
+                          //   const Text('PAYMENT'),
+                          //   const SpaceHeight(8.0),
+                          //   const DashedLine(),
+                          //   const DashedLine(),
+                          //   const SpaceHeight(8.0),
+                          //   const Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text('Cash'),
+                          //       Text('0'),
+                          //     ],
+                          //   ),
+                          //   const SpaceHeight(8.0),
+                          //   const DashedLine(),
+                          //   const DashedLine(),
+                          //   const SpaceHeight(8.0),
+                          //   const Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text('TOTAL'),
+                          //       Text('0'),
+                          //     ],
+                          //   ),
+                          // ],
+                        ],
+                      );
+                    });
+                  },
+                ),
               ),
-            
-            // Align(
-            //   alignment: Alignment.topCenter,
-            //   child: SingleChildScrollView(
-            //     padding: const EdgeInsets.all(24.0),
-            //     child: 
-            //     //     BlocBuilder<TransactionReportBloc, TransactionReportState>(
-            //     //   builder: (context, state) {
-            //     //     final totalRevenue = state.maybeMap(
-            //     //       orElse: () => 0,
-            //     //       loaded: (value) {
-            //     //         return value.transactionReport.fold(
-            //     //           0,
-            //     //           (previousValue, element) =>
-            //     //               previousValue + element.total,
-            //     //         );
-            //     //       },
-            //     //     );
-
-            //     //     final subTotal = state.maybeMap(
-            //     //       orElse: () => 0,
-            //     //       loaded: (value) {
-            //     //         return value.transactionReport.fold(
-            //     //           0,
-            //     //           (previousValue, element) =>
-            //     //               previousValue + element.subTotal,
-            //     //         );
-            //     //       },
-            //     //     );
-
-            //     //     final discount = state.maybeMap(
-            //     //       orElse: () => 0,
-            //     //       loaded: (value) {
-            //     //         return value.transactionReport.fold(
-            //     //           0,
-            //     //           (previousValue, element) =>
-            //     //               previousValue + element.discount,
-            //     //         );
-            //     //       },
-            //     //     );
-
-            //     //     final tax = state.maybeMap(
-            //     //       orElse: () => 0,
-            //     //       loaded: (value) {
-            //     //         return value.transactionReport.fold(
-            //     //           0,
-            //     //           (previousValue, element) =>
-            //     //               previousValue + element.tax,
-            //     //         );
-            //     //       },
-            //     //     );
-            //     //     return state.maybeWhen(orElse: () {
-            //     //       return const Center(
-            //     //         child: Text('No Data'),
-            //     //       );
-            //     //     }, loading: () {
-            //     //       return const Center(
-            //     //         child: CircularProgressIndicator(),
-            //     //       );
-            //     //     }, loaded: (transactionReport) {
-            //     //       return Column(
-            //     //         crossAxisAlignment: CrossAxisAlignment.start,
-            //     //         children: [
-            //     //           Center(
-            //     //             child: Text(
-            //     //               title,
-            //     //               style: const TextStyle(
-            //     //                   fontWeight: FontWeight.w600, fontSize: 16.0),
-            //     //             ),
-            //     //           ),
-            //     //           Center(
-            //     //             child: Text(
-            //     //               searchDateFormatted,
-            //     //               style: const TextStyle(fontSize: 16.0),
-            //     //             ),
-            //     //           ),
-            //     //           const SpaceHeight(16.0),
-
-            //     //           // REVENUE INFO
-            //     //           ...[
-            //     //             Text('REVENUE : $totalRevenue'),
-            //     //             const SpaceHeight(8.0),
-            //     //             const DashedLine(),
-            //     //             const DashedLine(),
-            //     //             const SpaceHeight(8.0),
-            //     //             Row(
-            //     //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //               children: [
-            //     //                 Text('Subtotal'),
-            //     //                 Text('$subTotal'),
-            //     //               ],
-            //     //             ),
-            //     //             const SpaceHeight(4.0),
-            //     //             Row(
-            //     //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //               children: [
-            //     //                 Text('Discount'),
-            //     //                 Text('$discount'),
-            //     //               ],
-            //     //             ),
-            //     //             const SpaceHeight(4.0),
-            //     //             Row(
-            //     //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //               children: [
-            //     //                 Text('Tax'),
-            //     //                 Text('$tax'),
-            //     //               ],
-            //     //             ),
-            //     //             const SpaceHeight(8.0),
-            //     //             const DashedLine(),
-            //     //             const DashedLine(),
-            //     //             const SpaceHeight(8.0),
-            //     //             Row(
-            //     //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //               children: [
-            //     //                 Text('TOTAL'),
-            //     //                 Text('$totalRevenue'),
-            //     //               ],
-            //     //             ),
-            //     //           ],
-            //     //           const SpaceHeight(32.0),
-
-            //     //           // PAYMENT INFO
-            //     //           // ...[
-            //     //           //   const Text('PAYMENT'),
-            //     //           //   const SpaceHeight(8.0),
-            //     //           //   const DashedLine(),
-            //     //           //   const DashedLine(),
-            //     //           //   const SpaceHeight(8.0),
-            //     //           //   const Row(
-            //     //           //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //           //     children: [
-            //     //           //       Text('Cash'),
-            //     //           //       Text('0'),
-            //     //           //     ],
-            //     //           //   ),
-            //     //           //   const SpaceHeight(8.0),
-            //     //           //   const DashedLine(),
-            //     //           //   const DashedLine(),
-            //     //           //   const SpaceHeight(8.0),
-            //     //           //   const Row(
-            //     //           //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     //           //     children: [
-            //     //           //       Text('TOTAL'),
-            //     //           //       Text('0'),
-            //     //           //     ],
-            //     //           //   ),
-            //     //           // ],
-            //     //         ],
-            //     //       );
-            //     //     });
-            //     //   },
-            //     // ),
-            //   ),
-            // ),
+            ),
           ),
         ],
       ),

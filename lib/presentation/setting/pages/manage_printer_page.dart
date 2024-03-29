@@ -35,8 +35,8 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
 
   String macName = '';
 
-  String _info = "";
-  String _msj = '';
+  String info = "";
+  String msj = '';
   bool connected = false;
   List<BluetoothInfo> items = [];
   final List<String> _options = [
@@ -46,10 +46,10 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
     "update info"
   ];
 
-  String _selectSize = "2";
+  final String _selectSize = "2";
   final _txtText = TextEditingController(text: "Hello developer");
-  bool _progress = false;
-  String _msjprogress = "";
+  bool progress = false;
+  String msjprogress = "";
 
   String optionprinttype = "58 mm";
   List<String> options = ["58 mm", "80 mm"];
@@ -66,7 +66,7 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       platformVersion = await PrintBluetoothThermal.platformVersion;
-      print("patformversion: $platformVersion");
+      debugPrint("platformversion: $platformVersion");
       porcentbatery = await PrintBluetoothThermal.batteryLevel;
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
@@ -78,36 +78,36 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
     if (!mounted) return;
 
     final bool result = await PrintBluetoothThermal.bluetoothEnabled;
-    print("bluetooth enabled: $result");
+    debugPrint("bluetooth enabled: $result");
     if (result) {
-      _msj = "Bluetooth enabled, please search and connect";
+      msj = "Bluetooth enabled, please search and connect";
     } else {
-      _msj = "Bluetooth not enabled";
+      msj = "Bluetooth not enabled";
     }
 
     setState(() {
-      _info = "$platformVersion ($porcentbatery% battery)";
+      info = "$platformVersion ($porcentbatery% battery)";
     });
   }
 
   Future<void> getBluetoots() async {
     setState(() {
-      _progress = true;
-      _msjprogress = "Wait";
+      progress = true;
+      msjprogress = "Wait";
       items = [];
     });
     final List<BluetoothInfo> listResult =
         await PrintBluetoothThermal.pairedBluetooths;
 
     setState(() {
-      _progress = false;
+      progress = false;
     });
 
     if (listResult.isEmpty) {
-      _msj =
+      msj =
           "There are no bluetoohs linked, go to settings and link the printer";
     } else {
-      _msj = "Touch an item in the list to connect";
+      msj = "Touch an item in the list to connect";
     }
 
     setState(() {
@@ -117,16 +117,16 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
 
   Future<void> connect(String mac) async {
     setState(() {
-      _progress = true;
-      _msjprogress = "Connecting...";
+      progress = true;
+      msjprogress = "Connecting...";
       connected = false;
     });
     final bool result =
         await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-    print("state conected $result");
+    debugPrint("state conected $result");
     if (result) connected = true;
     setState(() {
-      _progress = false;
+      progress = false;
     });
   }
 
@@ -135,7 +135,7 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
     setState(() {
       connected = false;
     });
-    print("status disconnect $status");
+    debugPrint("status disconnect $status");
   }
 
   Future<void> printTest() async {
@@ -144,7 +144,7 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
     if (conexionStatus) {
       List<int> ticket = await testTicket();
       final result = await PrintBluetoothThermal.writeBytes(ticket);
-      print("print test result:  $result");
+      debugPrint("print test result:  $result");
     } else {
       //no conectado, reconecte
     }
@@ -192,16 +192,16 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
       String text = "${_txtText.text}\n";
       bool result = await PrintBluetoothThermal.writeString(
           printText: PrintTextSize(size: int.parse(_selectSize), text: text));
-      print("status print result: $result");
+      debugPrint("status print result: $result");
       setState(() {
-        _msj = "printed status: $result";
+        msj = "printed status: $result";
       });
     } else {
       //no conectado, reconecte
       setState(() {
-        _msj = "no connected device";
+        msj = "no connected device";
       });
-      print("no conectado");
+      debugPrint("no conectado");
     }
   }
 
@@ -220,7 +220,7 @@ class _ManagePrinterPageState extends State<ManagePrinterPage> {
           printText: PrintTextSize(size: 3, text: "$text size 3"));
     } else {
       //desconectado
-      print("desconectado bluetooth $conexionStatus");
+      debugPrint("desconectado bluetooth $conexionStatus");
     }
   }
 

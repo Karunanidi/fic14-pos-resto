@@ -4,8 +4,6 @@ import 'package:flutter_posresto_app/core/extensions/string_ext.dart';
 import 'package:flutter_posresto_app/presentation/home/models/product_quantity.dart';
 import 'package:intl/intl.dart';
 
-import '../../presentation/home/models/order_item.dart';
-
 class PrintDataoutputs {
   PrintDataoutputs._init();
 

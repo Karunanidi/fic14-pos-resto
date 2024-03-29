@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_posresto_app/presentation/setting/bloc/discount/discount_bloc.dart';
 
-import '../../home/models/product_category.dart';
 import '../../home/widgets/custom_tab_bar.dart';
 import '../dialogs/form_discount_dialog.dart';
 import '../models/discount_model.dart';
@@ -69,7 +68,8 @@ class _DiscountPageState extends State<DiscountPage> {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    }, loaded: (discounts) {
+                    }, 
+                    loaded: (discounts) {
                       return GridView.builder(
                         shrinkWrap: true,
                         itemCount: discounts.length + 1,
@@ -96,31 +96,6 @@ class _DiscountPageState extends State<DiscountPage> {
                         },
                       );
                     });
-                    // return GridView.builder(
-                    //   shrinkWrap: true,
-                    //   itemCount: discounts.length + 1,
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   gridDelegate:
-                    //       const SliverGridDelegateWithFixedCrossAxisCount(
-                    //     childAspectRatio: 0.85,
-                    //     crossAxisCount: 3,
-                    //     crossAxisSpacing: 30.0,
-                    //     mainAxisSpacing: 30.0,
-                    //   ),
-                    //   itemBuilder: (context, index) {
-                    //     if (index == 0) {
-                    //       return AddData(
-                    //         title: 'Tambah Diskon Baru',
-                    //         onPressed: onAddDataTap,
-                    //       );
-                    //     }
-                    //     final item = discounts[index - 1];
-                    //     return ManageDiscountCard(
-                    //       data: item,
-                    //       onEditTap: () => onEditTap(item),
-                    //     );
-                    //   },
-                    // );
                   },
                 ),
               ),

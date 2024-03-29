@@ -48,17 +48,18 @@ class ProductCard extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: AppColors.disabled.withOpacity(0.4),
                   ),
-                  child: const ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                    child: Icon(Icons.food_bank_outlined),
-                    // child: Image.network(
-                    //   data.image!.contains('http')
-                    //       ? data.image!
-                    //       : '${Variables.baseUrl}/${data.image}',
-                    //   width: 50,
-                    //   height: 50,
-                    //   fit: BoxFit.cover,
-                    // ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                    child: data.image!.isEmpty
+                        ? const Icon(Icons.food_bank_outlined)
+                        : Image.network(
+                            data.image!.contains('http')
+                                ? data.image!
+                                : '${Variables.baseUrl}/${data.image}',
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 const Spacer(),

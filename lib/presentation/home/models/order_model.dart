@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_posresto_app/presentation/home/models/order_item.dart';
 import 'package:flutter_posresto_app/presentation/home/models/product_quantity.dart';
 
 //  id INTEGER PRIMARY KEY AUTOINCREMENT,
